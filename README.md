@@ -1,35 +1,29 @@
 # README
 
 ## Why should you use this?
-When you export your personal data from Facebook/Instagram, you will see that
-the encoding of .json messages you will get sucks. 
-To get your messages in human friendly readable format, you can 
-use this script. It works well and is very fast even when you will
-need to encode a lot of messages
+When you export your personal data from Facebook/Instagram, you will see that the encoding of the .json messages is not human-readable. This script combines and decodes the messages to a human-friendly format, making it easier to read and understand your message history.
 ## Installation
-To run this script, you will need the following requirements:
-- Python 3.6 or higher
-- tqdm library
-
-You can install tqdm library by running the following command in your terminal:
+To run this script, you will need Python 3.6 or higher and the tqdm library installed. You can install the tqdm library by running the following command in your terminal:
 
 pip install tqdm
 
 
 ## Usage
-1. Insert `message_x.json` files downloaded from Facebook after exporting user data to the `in/` folder. Ideally, one chat thread at a time.
-2. Rename the output files in `batch_decoder.py` accordingly.
-3. Run `decoder_py`.
+1. Export your personal data from Facebook or Instagram, and extract the messages folder from the downloaded data.
+2. Copy the message_x.json files you want to decode to the in/ folder of this script. Ideally, one chat thread at a time.
+3. Run the decoder_py script.
+4. The decoded messages will be saved as one file in the out/ folder.
+5. Put another conversation files inside in/ folder
+6. Repeat
 
 ## How does it work
-### `decoder_very_fast.py`
-This script is a decoder that reads a file with special characters and converts them to readable characters. It extends the `io.FileIO` class and overrides the `read` method to replace Unicode escape sequences with actual characters.
+The decoder_py script uses three functions to combine, decode, and write the messages to separate files.
 
-### `combine_json_files`
-This function combines multiple JSON files into one. It loops through all the `.json` files in a folder and appends their contents to a single dictionary, which is then dumped into an output file.
-
-### `convert_timestamps`
-This function converts the `timestamp_ms` field in each message to a more readable timestamp format. It reads a JSON file, converts the timestamps in its messages, sorts the messages by timestamp, and writes the updated JSON file to an output file.
+### `combine_and_convert_json_files`
+This function combines multiple JSON files into one, converts the timestamp_ms field in each message to a human-readable format, sorts the messages by timestamp, and writes the updated JSON file to the out/ folder.
 
 ### `batch_decoder.py`
-This script reads all the `.json` files in a folder, decodes special characters, and writes each message to a separate file in a different folder. It first calculates the total number of messages in the input directory and updates the progress bar accordingly. Then, for each `.json` file, it loads the messages, processes each message, and writes it to an output file. The `FacebookIO` class is used to decode special characters.
+This script reads the combined and decoded .json file in the out/ folder, and writes each message to a separate file in the out/decoded/ folder. It first calculates the total number of messages in the input file and updates the progress bar accordingly. Then, it loads the messages, decodes special characters, and writes each message to an output file.
+
+### FacebookIO
+The FacebookIO class is used to decode special characters in the JSON messages. It extends the io.FileIO class and overrides the read method to replace Unicode escape sequences with actual characters.
