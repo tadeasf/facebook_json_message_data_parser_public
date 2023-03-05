@@ -9,12 +9,20 @@ pip install tqdm
 
 
 ## Usage
-1. Export your personal data from Facebook or Instagram, and extract the messages folder from the downloaded data.
-2. Copy the message_x.json files you want to decode to the in/ folder of this script. Ideally, one chat thread at a time.
-3. Run the decoder_py script.
-4. The decoded messages will be saved as one file in the out/ folder.
-5. Put another conversation files inside in/ folder
-6. Repeat
+1. To extract your personal data from Facebook or Instagram, log in to your account and go to the settings page. From there, select "Download Your Information" and follow the prompts to generate a data file. Extract the messages folder from the downloaded data by navigating to the Messages folder within the data file and copying it to a separate location.
+
+2. Download this repository.
+
+3. Create in/ folder in the root of the repository.
+
+4. Copy the message_x.json files you want to decode to the in/ folder located in the root of the repository. Ideally, only one chat thread should be copied at a time.
+
+5. Create an out/ folder in the same location as the in/ folder.
+
+6. Run the decoder_py script from the repository. This script should be able to decode the message_x.json files located in the in/ folder and output the decoded messages as one file in the out/ folder.
+
+7. Repeat the process by copying another conversation file into the in/ folder and running the decoder_py script to decode the messages.
+
 
 ## How does it work
 The decoder_py script uses three functions to combine, decode, and write the messages to separate files.
