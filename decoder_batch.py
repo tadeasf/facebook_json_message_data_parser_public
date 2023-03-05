@@ -20,16 +20,17 @@ def combine_and_convert_json_files(input_folder, output_file):
         input_folder) if filename.endswith(".json")]
 
     with tqdm(total=len(file_list), desc="Combining and converting JSON files") as pbar:
-        for filename in file_list:
+        for i, filename in enumerate(file_list):
             file_path = os.path.join(input_folder, filename)
             with open(file_path, "r") as json_file:
                 data = json.load(json_file)
-                combined_json["participants"] = data["participants"]
+                if i == 0:
+                    combined_json["participants"] = data["participants"]
+                    combined_json["title"] = data["title"]
+                    combined_json["is_still_participant"] = data["is_still_participant"]
+                    combined_json["thread_path"] = data["thread_path"]
+                    combined_json["magic_words"] = data["magic_words"]
                 combined_json["messages"].extend(data["messages"])
-                combined_json["title"] = data["title"]
-                combined_json["is_still_participant"] = data["is_still_participant"]
-                combined_json["thread_path"] = data["thread_path"]
-                combined_json["magic_words"] = data["magic_words"]
             pbar.update(1)
 
     # Convert timestamps and sort the messages by timestamp
@@ -44,10 +45,8 @@ def combine_and_convert_json_files(input_folder, output_file):
                 del message['timestamp_ms']
             pbar.update(1)
 
-        messages_sorted = sorted(messages, key=lambda x: datetime.strptime(
-            x['timestamp'], '%H:%M %d/%m/%Y'))
-
-    combined_json['messages'] = messages_sorted
+    combined_json['messages'] = sorted(
+        combined_json['messages'], key=lambda x: datetime.strptime(x['timestamp'], '%H:%M %d/%m/%Y'))
 
     # Write the new JSON file to the output directory
     with open(os.path.join('out', output_file), "w") as outfile:
@@ -56,17 +55,22 @@ def combine_and_convert_json_files(input_folder, output_file):
     print(
         f"JSON files combined and timestamps converted successfully. Output file: {output_file}")
 
-    # Decode the updated file and overwrite the original file
+# Decode the updated file and overwrite the original file
     with FacebookIO(os.path.join('out', output_file), 'rb') as f:
         d = json.load(f)
         num_messages = len(d["messages"])
+        combined_json = {
+            "participants": d["participants"],
+            "messages": d["messages"],
+            "title": d["title"],
+            "is_still_participant": d["is_still_participant"],
+            "thread_path": d["thread_path"],
+            "magic_words": d["magic_words"]
+        }
         with tqdm(total=num_messages, desc="Processing messages in the input file") as pbar:
             with io.open(os.path.join('out', output_file), 'w', encoding='utf-8') as f_out:
-                for message in d["messages"]:
-                    # Process each message here
-                    f_out.write(json.dumps(
-                        message, ensure_ascii=False, indent=4) + '\n')
-                    pbar.update(1)
+                json.dump(combined_json, f_out, ensure_ascii=False, indent=4)
+                pbar.update(1)
 
     print(
         f"Messages processed and updated file overwritten successfully. Output file: {output_file}")
