@@ -1,2 +1,19 @@
+# Ignore JPG files
+*.jpg
+
+# Ignore JSON files
 *.json
-__pycache__
+
+# Ignore pycache
+__pycache__/
+
+# Ignore the feed directory and its contents
+feed/
+feed/**
+
+# Ignore the .git directory and its contents
+.git/
+.git/**
+
+# Ignore ds_store
+.DS_Store
