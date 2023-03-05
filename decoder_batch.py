@@ -6,6 +6,16 @@ from tqdm import tqdm
 from datetime import datetime
 
 
+def rename_output_file(output_file):
+    with open(os.path.join('out', output_file), 'r') as f:
+        data = json.load(f)
+        first_participant_name = data['participants'][0]['name']
+        new_output_file = first_participant_name + '.json'
+        os.rename(os.path.join('out', output_file),
+                  os.path.join('out', new_output_file))
+    print(f"Output file renamed to {new_output_file}")
+
+
 def combine_and_convert_json_files(input_folder, output_file):
     combined_json = {
         "participants": [],
@@ -42,7 +52,6 @@ def combine_and_convert_json_files(input_folder, output_file):
                 timestamp = datetime.fromtimestamp(
                     timestamp_ms/1000).strftime('%H:%M %d/%m/%Y')
                 message['timestamp'] = timestamp
-                del message['timestamp_ms']
             pbar.update(1)
 
     combined_json['messages'] = sorted(
@@ -79,3 +88,4 @@ def combine_and_convert_json_files(input_folder, output_file):
 input_folder = 'in/'  # folder with json files
 output_file = 'output.json'  # output file, rename it to your name
 combine_and_convert_json_files(input_folder, output_file)
+rename_output_file(output_file)
