@@ -25,5 +25,5 @@ This function combines multiple JSON files into one, converts the timestamp_ms f
 ### `batch_decoder.py`
 This script reads the combined and decoded .json file in the out/ folder, and writes each message to a separate file in the out/decoded/ folder. It first calculates the total number of messages in the input file and updates the progress bar accordingly. Then, it loads the messages, decodes special characters, and writes each message to an output file.
 
-### FacebookIO
+### `FacebookIO`
 The FacebookIO class is used to decode special characters in the JSON messages. It extends the io.FileIO class and overrides the read method to replace Unicode escape sequences with actual characters.
