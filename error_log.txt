@@ -1,1 +1,1 @@
-Error processing file in/input_90.json: Invalid control character at: line 1422 column 38 (char 48815)
+Error processing file in/input_206.json: [Errno 2] No such file or directory: 'out/Incendium studio / Kanopa_TadeaÌ\x81sÌ\x8c ForÌ\x8ct.json'
